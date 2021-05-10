@@ -1,9 +1,7 @@
 """
 Description:
 	Program uses beautiful soup, to parse all jobs listed on the LinkedIn job search page. 
-
-Notes:
-	Postgres connection will have to be updated to insert values from job details. 
+	These job details are loaded into a relationanl database whenever the program is run. 
 """
 
 from bs4 import BeautifulSoup
@@ -51,6 +49,6 @@ class BS4Parse:
 		curr.execute(build_sql)
 		conn.commit()
 
-# linkedinjoblinks
+
 x = BS4Parse()
 x.JobDetails()
