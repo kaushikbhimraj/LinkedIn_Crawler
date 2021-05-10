@@ -10,6 +10,8 @@ from bs4 import BeautifulSoup
 from main import ParseJobs
 import requests
 
+import psycopg2
+
 class BS4Parse:
 
 	def JobDetails(self):
@@ -27,6 +29,13 @@ class BS4Parse:
 			spantag = li_tags[i].find("span", class_="screen-reader-text")
 			timetag = li_tags[i].find("time", class_="job-result-card__listdate")
 
+			link    = atag["href"]
+			job     = spantag.text
+			company = h4tag.text
+			posted  = timetag.text
+
+			self.insert2db(link, job, company, posted)
+
 			print("Link:      " + atag["href"]) if atag else print("Link:      " + "NA")
 			print("Job Title: " + spantag.text) if spantag else print("Job Title: " + "NA")
 			print("Company:   " + h4tag.text) if h4tag else print("Company:    " +  "NA")
@@ -34,5 +43,14 @@ class BS4Parse:
 
 			print("\n")
 
+	def insert2db(self, link, job_title, company, posted):
+		conn = psycopg2.connect(host="localhost", database="LinkedIn_Jobs_Database_05_09_2021", user="postgres", password="767992")
+		curr = conn.cursor()
+
+		build_sql = "insert into joblinks(job_link,job_title,company,posted_days) values ('" + link  + "','" + job_title + "','" + company + "','" + posted + "')"
+		curr.execute(build_sql)
+		conn.commit()
+
+# linkedinjoblinks
 x = BS4Parse()
 x.JobDetails()
