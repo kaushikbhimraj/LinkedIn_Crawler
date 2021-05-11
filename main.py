@@ -58,6 +58,8 @@ class ParseJobs:
 		self.driver.find_element_by_xpath("//input[@name=\"Past 24 hours\"]").send_keys(Keys.SPACE)
 		self.driver.find_element_by_xpath("/html/body/div[6]/div[3]/div[3]/section/div/div/div/div[1]/div/div[2]/ul/li[4]/div/div/div/div[1]/div/form/fieldset/div[2]/button[2]").click()
 
+		sleep(3)
+
 		url = self.driver.current_url
 		self.driver.quit()
 

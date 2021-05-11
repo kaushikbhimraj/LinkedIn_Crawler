@@ -26,20 +26,21 @@ class BS4Parse:
 			h4tag   = li_tags[i].find("h4", class_="result-card__subtitle job-result-card__subtitle")
 			spantag = li_tags[i].find("span", class_="screen-reader-text")
 			timetag = li_tags[i].find("time", class_="job-result-card__listdate")
+			
+			if atag and spantag and h4tag and timetag:
+				link    = atag["href"]
+				job     = spantag.text
+				company = h4tag.text
+				posted  = timetag.text
 
-			link    = atag["href"]
-			job     = spantag.text
-			company = h4tag.text
-			posted  = timetag.text
+				self.insert2db(link, job, company, posted)
 
-			self.insert2db(link, job, company, posted)
+				print("Link:      " + atag["href"])
+				print("Job Title: " + spantag.text)
+				print("Company:   " + h4tag.text)
+				print("Posted:    " + timetag.text)
 
-			print("Link:      " + atag["href"]) if atag else print("Link:      " + "NA")
-			print("Job Title: " + spantag.text) if spantag else print("Job Title: " + "NA")
-			print("Company:   " + h4tag.text) if h4tag else print("Company:    " +  "NA")
-			print("Posted:    " + timetag.text) if timetag else print("Posted:    " +  "NA")
-
-			print("\n")
+				print("\n")
 
 	def insert2db(self, link, job_title, company, posted):
 		conn = psycopg2.connect(host="localhost", database="LinkedIn_Jobs_Database_05_09_2021", user="postgres", password="767992")
